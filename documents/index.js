@@ -14,14 +14,14 @@ return `
             }
     
             .title {
-                font-size: 18px;
+                font-size: 15px;
                 text-align: center;
                 font-widht: 100;
                 padding: 15% 5% 2% 5%;
                 margin-bottom: 2%;
             }
             .title2 {
-                font-size: 18px;
+                font-size: 15px;
                 text-align: center;
                 font-widht: 100;
                 padding: 2% 5% 2% 5%;
@@ -33,7 +33,7 @@ return `
             .top {
                 position: absolute;
                 top: 5%;
-                font-size: 15px;
+                font-size: 12px;
                 line-height: 2px;
                 text-align: center;
                 margin-bottom: 10%;
@@ -59,7 +59,7 @@ return `
                 text-align: center;
             }
             .small {
-                font-size: 10px;
+                font-size: 6px;
                 line-height: -2px;
             }
           </style>
