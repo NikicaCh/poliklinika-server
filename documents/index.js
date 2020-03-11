@@ -12,9 +12,12 @@ return `
                 height: auto;
                 padding: 6% 10% 6% 10%;
             }
+            .p {
+                font-size: 9px 
+            }
     
             .title {
-                font-size: 12px;
+                font-size: 14px;
                 text-align: center;
                 font-widht: 100;
                 padding: 15% 5% 2% 5%;
@@ -62,9 +65,7 @@ return `
                 font-size: 4px;
                 line-height: -2px;
             }
-            .p {
-                font-size: 6px 
-            }
+            
           </style>
        </head>
        <div id={"hello"} class="document">
