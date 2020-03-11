@@ -13,18 +13,18 @@ return `
                 padding: 6% 10% 6% 10%;
             }
             .p {
-                font-size: 9px 
+                font-size: 10px 
             }
     
             .title {
-                font-size: 14px;
+                font-size: 13px;
                 text-align: center;
                 font-widht: 100;
                 padding: 15% 5% 2% 5%;
                 margin-bottom: 2%;
             }
             .title2 {
-                font-size: 12px;
+                font-size: 13px;
                 text-align: center;
                 font-widht: 100;
                 padding: 2% 5% 2% 5%;
@@ -126,9 +126,9 @@ return `
                 <br />
                 <br />
             </p>
-            <p class="centarl">(МП)</p>
+            <p class="centarl p">(МП)</p>
             <div class="b-left">
-                Куманово,  05.03.2020
+                <p class="p">Куманово,  05.03.2020</p>
                 <p class="small">(место и датум)</p>
             </div>
             <div class="b-right">
