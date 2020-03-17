@@ -95,7 +95,7 @@ module.exports = ({ body }) => {
                 <p class="p">Врз основа на упатот за претходен преглед бр. ______________ од ___________ година</p>
                 <p class="p"> Извршен е преглед на <strong>${body.name} ${body.lastName}</strong>
                 </p>
-                <p class="p"> роден/а <strong>${body.age}</strong> по професија <strong>${body.education}</strong>
+                <p class="p"> роден/а <strong>${body.age}</strong> ${(body.education !== undefined) ? `по професија <strong>${body.education}</strong>` : undefined} 
                 </p>
                 <p class="p"> кој/а работи на работно место <strong>${body.position}</strong></p>
                 <p class="p"> Врз основа на извршените прегледи во согласност со правилникот на видот, начинот 
