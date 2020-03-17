@@ -4,7 +4,8 @@ const pdf = require("html-pdf")
 const cors = require("cors")
 const fs = require("fs")
 
-const pdfTemplate = require("./documents")
+const employeeTemplate = require("./documents/employee")
+const companyTemplate = require("./documents/company")
 
 const app = express()
 
@@ -55,14 +56,22 @@ app.get("/getData", (req, res) => {
 
 
 // POST -> PDF generation and fetching of the data
-app.post('/create-pdf', (req, res) => {
-    pdf.create(pdfTemplate(req.body), {}).toFile('result.pdf', (err, response) => {
+app.post('/create-employee-pdf', (req, res) => {
+        pdf.create(employeeTemplate(req.body), {}).toFile('result.pdf', (err, response) => {
+            if(err) res.send(Promise.reject())
+            else {
+               if(response) res.send(Promise.resolve())
+            }
+        })
+})
+
+app.post('/create-company-pdf', (req, res) => {
+    pdf.create(companyTemplate(req.body), {}).toFile('result.pdf', (err, response) => {
         if(err) res.send(Promise.reject())
         else {
-           if(response) res.send(Promise.resolve())
+            if(response) res.send(Promise.resolve())
         }
     })
-    
 })
 
 // GET -> Send the generated pdf to the client
