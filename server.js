@@ -37,7 +37,7 @@ app.post("/getCompanies", (req, res) => {
         }
         try {
             data = JSON.parse(jsonString)
-            console.log("Data:", data)// => "Customer address is: Infinity Loop Drive"
+            console.log("Data:", data)
             if(req.body) {
                 res.send(Promise.resolve()) 
             }
@@ -50,6 +50,71 @@ app.post("/getCompanies", (req, res) => {
 
 app.get("/getData", (req, res) => {
     res.send(data)
+})
+
+app.post('/updateCompanies', (req, res) => {
+
+    function containsObject(obj, list) {
+        var i;
+        for (i = 0; i < list.length; i++) {
+            if (list[i] === obj) {
+                return true;
+            }
+        }
+    
+        return false;
+    }
+    const newData = JSON.stringify(req.body.body)
+    fs.readFile('./companies.json', 'utf8', (err, jsonString) => {
+        if (err) {
+            console.log("File read failed:", err)
+        } else {
+            let json = JSON.parse(jsonString)
+            json=[...new Set(json),req.body.body]
+            if(!containsObject(req.body.body, jsonString)) {
+                fs.writeFile("./companies.json", JSON.stringify(json), (err) => {
+                    if (err) console.log('Error writing file:', err)
+                })
+                res.send(Promise.resolve())
+            } 
+        }
+    })
+    
+})
+
+app.post("/recent-searches", (req, res) => {
+    function containsObject(obj, list) {
+        var i;
+        for (i = 0; i < list.length; i++) {
+            if (list[i] === obj) {
+                return true;
+            }
+        }
+    
+        return false;
+    }
+    const newData = JSON.stringify(req.body.body)
+    fs.readFile('./recent.json', 'utf8', (err, jsonString) => {
+        if (err) {
+            console.log("File read failed:", err)
+        } else {
+            let json = JSON.parse(jsonString)
+            json=[...new Set(json),req.body.body]
+            if(json.length > 8) {
+                json = json.slice(1, 9)
+            }
+            if(!containsObject(req.body.body, jsonString)) {
+                fs.writeFile("./recent.json", JSON.stringify(json), (err) => {
+                    if (err) console.log('Error writing file:', err)
+                })
+                res.send(Promise.resolve())
+            } 
+        }
+    })
+})
+
+app.get("/recent-searches", (req, res) => {
+    res.sendFile(`${__dirname}/recent.json`)
 })
 
 
@@ -69,6 +134,8 @@ app.post('/create-pdf', (req, res) => {
 app.get("/fetch-pdf", (req, res) => {
     res.sendFile(`${__dirname}/result.pdf`)
 })
+
+app.post('')
 
 
 
