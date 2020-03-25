@@ -1,15 +1,19 @@
-const express = require("express")
+const express = require('express')
 const bodyParser = require("body-parser")
 const pdf = require("html-pdf")
 const cors = require("cors")
 const fs = require("fs")
+const path = require('path');
 
-const employeeTemplate = require("./documents/employee")
-const companyTemplate = require("./documents/company")
 
-const app = express()
+let employeeTemplate = require("./documents/employee")
+let companyTemplate = require("./documents/company")
 
-const port = process.env.PORT || 5000
+
+let app = express()
+
+
+
 
 
 app.use(cors())
@@ -25,13 +29,19 @@ app.use(function(req, res, next) {
 });
 
 
+
+
+app.get('/hello', (req, res) => {
+    res.send("HELLO")
+})
+
 app.get("/helloworld", (req, res) => {
     res.send("HELLO WORLD DEAR USER, your firebase hosting works perfectlly")
 })
 
 app.post("/getCompanies", (req, res) => {
     //read the companies json file data
-    fs.readFile('./companies.json', 'utf8', (err, jsonString) => {
+    fs.readFile(`./companies.json`, 'utf8', (err, jsonString) => {
         if (err) {
             console.log("Error reading file from disk:", err)
             res.send(Promise.reject())
@@ -66,14 +76,14 @@ app.post('/updateCompanies', (req, res) => {
         return false;
     }
     const newData = JSON.stringify(req.body.body)
-    fs.readFile('./companies.json', 'utf8', (err, jsonString) => {
+    fs.readFile(`./companies.json`, 'utf8', (err, jsonString) => {
         if (err) {
             console.log("File read failed:", err)
         } else {
             let json = JSON.parse(jsonString)
             json=[...new Set(json),req.body.body]
             if(!containsObject(req.body.body, jsonString)) {
-                fs.writeFile("./companies.json", JSON.stringify(json), (err) => {
+                fs.writeFile(`./companies.json`, JSON.stringify(json), (err) => {
                     if (err) console.log('Error writing file:', err)
                 })
                 res.send(Promise.resolve())
@@ -83,7 +93,9 @@ app.post('/updateCompanies', (req, res) => {
     
 })
 
-app.post("/recent-searches", (req, res) => {
+
+
+app.post("/recent", (req, res) => {
     function containsObject(obj, list) {
         var i;
         for (i = 0; i < list.length; i++) {
@@ -95,7 +107,7 @@ app.post("/recent-searches", (req, res) => {
         return false;
     }
     const newData = JSON.stringify(req.body.body)
-    fs.readFile('./recent.json', 'utf8', (err, jsonString) => {
+    fs.readFile(`./recent.json`, 'utf8', (err, jsonString) => {
         if (err) {
             console.log("File read failed:", err)
         } else {
@@ -105,7 +117,7 @@ app.post("/recent-searches", (req, res) => {
                 json = json.slice(1, 9)
             }
             if(!containsObject(req.body.body, jsonString)) {
-                fs.writeFile("./recent.json", JSON.stringify(json), (err) => {
+                fs.writeFile(`./recent.json`, JSON.stringify(json), (err) => {
                     if (err) console.log('Error writing file:', err)
                 })
                 res.send(Promise.resolve())
@@ -114,15 +126,22 @@ app.post("/recent-searches", (req, res) => {
     })
 })
 
-app.get("/recent-searches", (req, res) => {
-    res.sendFile(`${__dirname}/recent.json`)
+app.get("/recent", (req, res) => {
+    fs.readFile('./recent.json', 'utf8', (err, jsonString) => {
+        if (err) {
+            console.log("File read failed:", err)
+        } else {
+            let json = JSON.parse(jsonString)
+            res.send(json)
+        }
+    })
 })
 
 
 
 // POST -> PDF generation and fetching of the data
 app.post('/create-employee-pdf', (req, res) => {
-        pdf.create(employeeTemplate(req.body), {}).toFile('result.pdf', (err, response) => {
+        pdf.create(employeeTemplate(req.body), {}).toFile(`./result.pdf`, (err, response) => {
             if(err) res.send(Promise.reject())
             else {
                if(response) res.send(Promise.resolve())
@@ -131,7 +150,7 @@ app.post('/create-employee-pdf', (req, res) => {
 })
 
 app.post('/create-company-pdf', (req, res) => {
-    pdf.create(companyTemplate(req.body), {}).toFile('result.pdf', (err, response) => {
+    pdf.create(companyTemplate(req.body), {}).toFile(`./result.pdf`, (err, response) => {
         if(err) res.send(Promise.reject())
         else {
             if(response) res.send(Promise.resolve())
@@ -143,11 +162,3 @@ app.post('/create-company-pdf', (req, res) => {
 app.get("/fetch-pdf", (req, res) => {
     res.sendFile(`${__dirname}/result.pdf`)
 })
-
-app.post('')
-
-
-
-
-
-app.listen(port, () => console.log("Listening to port", port))
